@@ -1,0 +1,26 @@
+version: '3'
+services:
+  database:
+    build: ./mysql/
+    command: mysqld --user=root --verbose --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_HOST: "%"
+      MYSQL_USER: "user"
+      MYSQL_PASSWORD: "password"
+      MYSQL_DATABASE: "demo"
+      MYSQL_ROOT_PASSWORD: "passwordroot"
+    networks:
+      - demonet
+  web:
+    build: ./www/
+    ports:
+            - "127.0.0.1:8443:80"
+    depends_on:
+      - database
+    volumes:
+      - ./www/src:/var/www/html
+    networks:
+      - demonet
+
+networks:
+  demonet:
