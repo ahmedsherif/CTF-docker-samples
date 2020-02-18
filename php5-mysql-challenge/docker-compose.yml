@@ -12,6 +12,7 @@ services:
     networks:
       - demonet
   web:
+    container_name: web1
     build: ./www/
     ports:
             - "127.0.0.1:8443:80"

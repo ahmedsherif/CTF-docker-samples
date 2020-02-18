@@ -1,5 +1,5 @@
 #!/bin/sh
 
-export FLASK_APP=flask-vuln.py
+export FLASK_APP=app.py
 flask run $* >log.txt 2>&1
 
