@@ -22,12 +22,12 @@ services:
 by running the following command directly:
 
 ```
-python ctf.py
+python ctf-nginx-add.py
 ```
 
 Add new challenge to nginx: 
 
 ```
-python ctf.py /etc/letsencrypt/live/ctf.sherif.ninja/fullchain.pem /etc/letsencrypt/live/ctf.sherif.ninja/privkey.pem ctf.sherif.ninja 8443
+python ctf-nginx-add.py /etc/letsencrypt/live/ctf.sherif.ninja/fullchain.pem /etc/letsencrypt/live/ctf.sherif.ninja/privkey.pem ctf.sherif.ninja 8443
 
 ```
