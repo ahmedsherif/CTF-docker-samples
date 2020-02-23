@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 import random,string
-import sys
+import sys,re
 
 
 class bcolors:
@@ -40,10 +40,24 @@ def generate_challenges(ssl_certificate,ssl_certificate_key,domain,docker_port):
     except Exception as e:
         print(str(e))
 
+def get_hostname_port():
+    pattern = re.compile("(?<=server_name )(\S+)(?=(;))|(?<=proxy_pass )(\S+)(?=(;))")
+
+    for i, line in enumerate(open('/etc/nginx/sites-enabled/default')):
+        for match in re.finditer(pattern, line):
+            if '127.0.0.1' in match.group():
+
+                print bcolors.WARNING + 'Docker Port %s' % (match.group()) + '\t' + bcolors.ENDC
+            else:
+                print bcolors.OKGREEN + 'Hostname is %s'%(match.group()) + bcolors.ENDC
+
+
 
 if __name__ == '__main__':
     if len(sys.argv) < 4:
-        print(bcolors.WARNING + "python {0} /etc/letsencrypt/live/ctf.sherif.ninja/fullchain.pem /etc/letsencrypt/live/ctf.sherif.ninja/privkey.pem ctf.sherif.ninja 8443".format(sys.argv[0]) + bcolors.ENDC)
+        print("You need to run the following command")
+        print(bcolors.FAIL + "python {0} /etc/letsencrypt/live/ctf.sherif.ninja/fullchain.pem /etc/letsencrypt/live/ctf.sherif.ninja/privkey.pem ctf.sherif.ninja 8443".format(sys.argv[0]) + bcolors.ENDC)
+        get_hostname_port()
         exit(1)
     else:
         ssl_certificate = sys.argv[1]
@@ -51,4 +65,3 @@ if __name__ == '__main__':
         domain = sys.argv[3]
         docker_port = sys.argv[4]
         generate_challenges(ssl_certificate,ssl_certificate_key,domain,docker_port)
-
